@@ -1,0 +1,14 @@
+{
+  "name": "sponsored",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sponsored: a sponsored post paid only for what it actually shows. Validators read the creator's post on the live web against the sponsor's brief, a post that hides that it is an ad is not paid, and each requirement met pays its share of the fee.",
+  "type": "module",
+  "scripts": {
+    "smoke": "node tests/on_chain/smoke.mjs"
+  },
+  "dependencies": {
+    "genlayer-js": "1.1.8",
+    "viem": "2.56.8"
+  }
+}
