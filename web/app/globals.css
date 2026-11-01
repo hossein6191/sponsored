@@ -1,0 +1,405 @@
+@import "tailwindcss";
+
+/* Sponsored looks like a creator studio: a bright cream canvas, ink-navy type, tomato for the one thing
+   to press and mint for a line the post met. The creator's post sits in a phone frame as a social post
+   card; the brief is a checklist card whose lines light up mint or stay tomato from the agreed mask, with
+   line 0 as a "#ad disclosure" badge; held pay is a progress bar to its release time; buttons are pills
+   with a round icon on the right that press down. Motion: a button pressing, a line lighting up, the
+   reading dots and the hold bar filling; all of it is skipped for anyone who asks for reduced motion. */
+
+@theme {
+  --color-canvas: #faf7f2;
+  --color-canvas-2: #f2ede4;
+  --color-card: #ffffff;
+  --color-line: #e8e2d7;
+  --color-line-strong: #cfc6b6;
+  --color-ink: #1b1f3b;
+  --color-ink-2: #474b67;
+  --color-ink-3: #74788f;
+  --color-ink-wash: #e9eaf3;
+  --color-tomato: #ff5a36;
+  --color-tomato-deep: #e8431f;
+  --color-tomato-ink: #c0341a;
+  --color-tomato-wash: #ffe6de;
+  --color-mint: #3ddc97;
+  --color-mint-deep: #20b877;
+  --color-mint-ink: #0b6e46;
+  --color-mint-wash: #dbf6e9;
+  --color-focus: #2f62ff;
+
+  --font-sans: var(--font-dm-sans), "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-display: var(--font-syne), var(--font-dm-sans), system-ui, sans-serif;
+  --font-mono: var(--font-azeret), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  font-weight: 800;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "zero" 1;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* A white card on the canvas. */
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: 22px;
+    box-shadow:
+      0 1px 0 rgba(27, 31, 59, 0.04),
+      0 18px 36px -28px rgba(27, 31, 59, 0.45);
+  }
+
+  .kicker {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .link {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-tomato) 60%, transparent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .link:hover {
+    text-decoration-color: var(--color-tomato);
+  }
+
+  /* Pill buttons: a label, then a round icon on the right; they press down by their own shadow. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 48px;
+    max-width: 100%;
+    padding: 0.3rem 0.3rem 0.3rem 1.2rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 9999px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.15;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 0 0 var(--color-ink);
+    transform: translateY(0);
+    transition:
+      transform 90ms ease,
+      box-shadow 90ms ease,
+      background-color 120ms ease;
+    user-select: none;
+  }
+  .pill:active:not(:disabled),
+  .pill[data-pressed="true"] {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 var(--color-ink);
+  }
+  .pill:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: 0 2px 0 0 var(--color-ink);
+  }
+  .pill-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+  }
+  .pill-sm {
+    min-height: 38px;
+    font-size: 13.5px;
+    padding: 0.2rem 0.2rem 0.2rem 0.95rem;
+    box-shadow: 0 3px 0 0 var(--color-ink);
+  }
+  .pill-sm .pill-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .pill-sm:active:not(:disabled) {
+    transform: translateY(3px);
+  }
+  .pill-tomato {
+    background: var(--color-tomato);
+    color: #fff;
+  }
+  .pill-tomato:hover:not(:disabled) {
+    background: var(--color-tomato-deep);
+  }
+  .pill-tomato .pill-icon {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .pill-ink {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .pill-ink .pill-icon {
+    background: var(--color-tomato);
+    color: #fff;
+  }
+  .pill-mint {
+    background: var(--color-mint);
+    color: var(--color-ink);
+  }
+  .pill-mint:hover:not(:disabled) {
+    background: #5be6a9;
+  }
+  .pill-mint .pill-icon {
+    background: var(--color-ink);
+    color: var(--color-mint);
+  }
+  .pill-ghost {
+    background: #fff;
+    color: var(--color-ink);
+  }
+  .pill-ghost:hover:not(:disabled) {
+    background: var(--color-canvas-2);
+  }
+  .pill-ghost .pill-icon {
+    background: var(--color-canvas-2);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-ink);
+  }
+
+  /* One-click suggestion chips under a field. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    max-width: 100%;
+    min-height: 32px;
+    padding: 0.25rem 0.7rem 0.25rem 0.35rem;
+    border: 1.5px solid var(--color-line-strong);
+    border-radius: 9999px;
+    background: #fff;
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 120ms ease,
+      background-color 120ms ease,
+      transform 90ms ease;
+  }
+  .chip:hover {
+    border-color: var(--color-ink);
+  }
+  .chip:active {
+    transform: scale(0.97);
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: #fff;
+  }
+  .chip-plus {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    background: var(--color-tomato-wash);
+    color: var(--color-tomato-ink);
+    font-weight: 800;
+  }
+  .chip[aria-pressed="true"] .chip-plus {
+    background: var(--color-mint);
+    color: var(--color-ink);
+  }
+
+  /* Form fields. */
+  .field {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--color-line-strong);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--color-ink);
+    font-size: 15.5px;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-tomato) 22%, transparent);
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--color-tomato);
+  }
+  .label {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 0.4rem;
+  }
+
+  /* The phone frame the post is shown in. */
+  .phone {
+    position: relative;
+    width: min(340px, 100%);
+    margin-inline: auto;
+    padding: 11px;
+    border-radius: 46px;
+    background: var(--color-ink);
+    box-shadow:
+      inset 0 0 0 2px #2c3157,
+      0 30px 50px -30px rgba(27, 31, 59, 0.75);
+  }
+  .phone-screen {
+    position: relative;
+    overflow: hidden;
+    border-radius: 36px;
+    background: #fff;
+    min-height: 540px;
+  }
+  .phone-island {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    z-index: 2;
+    width: 96px;
+    height: 26px;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: var(--color-ink);
+  }
+
+  /* The "#ad" badge of line 0. */
+  .ad-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  /* The cover picture of a demo post: a sea, a horizon and an orange dry bag, drawn in CSS. */
+  .post-cover {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #cfe9f2 0%, #e9f6f6 46%, #3a8fb0 47%, #2c7393 100%);
+  }
+}
+
+/* A line lighting up mint when the network agrees it was met. */
+@keyframes light-up {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.2;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.lit {
+  animation: light-up 420ms ease-out both;
+}
+
+/* The three dots while a post is being read. */
+@keyframes reading-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+.reading-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 1.5px;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: reading-dot 1.2s infinite ease-in-out;
+}
+.reading-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.reading-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* A soft pulse on the current consensus stage. */
+@keyframes stage-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.stage-now {
+  animation: stage-pulse 1.4s infinite ease-in-out;
+}
+
+.hold-fill {
+  transition: width 900ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .pill:active:not(:disabled) {
+    transform: none;
+  }
+}

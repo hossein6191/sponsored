@@ -1,0 +1,94 @@
+[keeper] starting 2026-10-31T19:35:09.290Z
+[19:35:15] SPONSOR  0x56916Fa37a5e7522b2440D1bF1eeAEE933778CbA
+           CREATOR  0xb01302f74e872C09074ce0a60a9e78C5A7b6CD08
+           STRANGER 0xA64511648eFECE5cC4FF5351394F2B579c8ccDAe
+           posts https://raw.githubusercontent.com/hossein6191/sponsored/237b0e8a6645f3819fd5c12f317c686b8ce3f61a/posts/
+
+[19:35:15] ---- phase A: deploy, three briefs in escrow, the creator takes them on
+      [19:36:12] SPONSOR deploy sponsored.py  0x3db58250997de3ea1d311ca7a4dfb34d45d1f1175d47a6e6050e28cdd500d6d4  5 agree, 0 disagree, 0 idle  SUCCESS  0xa8e1A29e1C79aa7610f0583c769EA21f9317f556
+      Sponsored at 0xa8e1A29e1C79aa7610f0583c769EA21f9317f556
+      [19:36:51] SPONSOR open_brief(872C09074ce0a60a9e78C5A7b6CD08, fd5c12f317c686b8ce3f61a/posts/, that the bag comes in orange"], 1793478972, 600) +0.9 GEN  0x57c3809aa3b52087644db7210c6f443ca82c0f4af6b834ba5e181e4e4ae3ccb4  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  SPONSOR opens B1 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held  - 3 agree, 0 disagree, 2 idle  &{"ok": true, "brief": "B1", "sponsor": "0x56916fa37a5e7522b2440d1bf1eeaee933778cba", "creator": "0xb01302f74e872c09074c
+      [19:37:31] SPONSOR open_brief(872C09074ce0a60a9e78C5A7b6CD08, fd5c12f317c686b8ce3f61a/posts/, that the bag comes in orange"], 1793479012, 600) +0.9 GEN  0xf0d6c4854dcd36dea31adeef85e62b207b9455b7dd6c8e8ebfc2ec75ac933ef8  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  SPONSOR opens B2 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held  - 3 agree, 0 disagree, 2 idle  &{"ok": true, "brief": "B2", "sponsor": "0x56916fa37a5e7522b2440d1bf1eeaee933778cba", "creator": "0xb01302f74e872c09074c
+      [19:38:08] SPONSOR open_brief(872C09074ce0a60a9e78C5A7b6CD08, fd5c12f317c686b8ce3f61a/posts/, that the bag comes in orange"], 1793479052, 600) +0.9 GEN  0xfc0295ae7e66dffcdd0c4bd62ddf8c7c68953d9c7adc490e03accaa80607f293  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  SPONSOR opens B3 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held  - 3 agree, 0 disagree, 2 idle  &{"ok": true, "brief": "B3", "sponsor": "0x56916fa37a5e7522b2440d1bf1eeaee933778cba", "creator": "0xb01302f74e872c09074c
+      [19:39:38] STRANGER accept(B1)  0x7a9261a927086559576e62a6db70fa975f9cd06eb63cb518c1d4503ff5aafbb1  3 agree, 0 disagree, 2 idle  ERROR
+PASS  STRANGER may not accept B1  - 3 agree, 0 disagree, 2 idle  [EXPECTED] only the creator of B1 may accept it
+      [19:40:17] SPONSOR open_brief(5e7522b2440D1bF1eeAEE933778CbA, fd5c12f317c686b8ce3f61a/posts/, that the bag comes in orange"], 1793478972, 600) +0.9 GEN  0xf24bf0cd9fccdad2a7ffef9270c683cf001a19bce7f3d94af093d2840aff8f60  5 agree, 0 disagree, 0 idle  SUCCESS
+PASS  SPONSOR may not name itself as the creator, and the 0.9 GEN comes back in the same transaction  - 5 agree, 0 disagree, 0 idle  the sponsor may not name itself as the creator
+      [19:41:42] CREATOR accept(B1)  0xc57b2174a5db44ac41fce3b8cf17b8721bdf167a22be697f09fa131306e92d4a  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  CREATOR accepts B1 before publish_by  - 3 agree, 0 disagree, 2 idle  {"ok": true, "brief": "B1", "status": "accepted", "publish_by": 1793478972, "submit_closes": 1793565
+      [19:43:06] CREATOR accept(B2)  0xce886aae91115f56cf1bf3d72911f93d7fbc0da5703afe73eaa4c84f8a9d7416  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  CREATOR accepts B2 before publish_by  - 3 agree, 0 disagree, 2 idle  {"ok": true, "brief": "B2", "status": "accepted", "publish_by": 1793479012, "submit_closes": 1793565
+      [19:44:31] CREATOR accept(B3)  0x4adab80ecda565510aec4c49bc38d0f4cc6ba7558fdff6af7be61ead7e1d92ee  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  CREATOR accepts B3 before publish_by  - 3 agree, 0 disagree, 2 idle  {"ok": true, "brief": "B3", "status": "accepted", "publish_by": 1793479052, "submit_closes": 1793565
+      [19:45:07] CREATOR deposit() +0.05 GEN  0x5da3c01d7a0aac19c66d2288dbecb52fb548b2b0059896f0b12441c7ebfeb0dd  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  CREATOR deposits 0.05 GEN of credit for submit fees  - 3 agree, 0 disagree, 2 idle  {"ok": true, "address": "0xb01302f74e872c09074ce0a60a9e78c5a7b6cd08", "deposited": "5000000000000000
+
+[19:45:07] ---- phase B: the posts, every one read by the validators on the live web
+      [19:47:40] STRANGER submit(B1, 7c686b8ce3f61a/posts/full.html)  0x0e4e2fdf622499acf5533e6f068381f9a7388af96f2fd765e2f3ef1be4ee6338  3 agree, 0 disagree, 2 idle  ERROR
+PASS  STRANGER may not submit a post for B1  - 3 agree, 0 disagree, 2 idle  [EXPECTED] only the creator of B1 may submit a post for it
+      [19:48:17] CREATOR submit(B1, c12f317c686b8ce3f61a/README.md)  0x1fcb1fac18b91404567dfca1592891e723ecf857cf9416518003858343b627a9  5 agree, 0 disagree, 0 idle  ERROR
+PASS  CREATOR points at the repository's README, outside the post prefix: refused before any fetch, no fee  - 5 agree, 0 disagree, 0 idle  [EXPECTED] the post is not below B1's post prefix https://raw.githubusercontent.com/hossein6191/sponsored/237b0e8a6645f3819fd5c12f317c686b8ce3f61a/posts/; only 
+      [19:49:15] CREATOR submit(B1, 7c686b8ce3f61a/posts/full.html)  0xcbf4826c283048349ae48f638bf7dd45e55f2e9b48030ffddf75bac272494606  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  every validator reads full.html for B1: 1111, the whole 0.9 GEN held for CREATOR until the hold ends  - 3 agree, 0 disagree, 2 idle  {"mask":"1111","fp":"485e8e86e78b898e","hold_until":1793476699}
+      .. the stored fingerprint 485e8e86e78b898e; this checkout's file with its tags removed and spacing collapsed gives 485e8e86e78b898e
+      [19:52:02] CREATOR submit(B2, 3f61a/posts/no-disclosure.html)  0xc75b37b50852535ce5726e5fe030475eb77ddb3d62ef069d61c57b9a252ed157  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  every validator reads no-disclosure.html for B2: 0111, a hidden ad, the whole 0.9 GEN back to SPONSOR  - 3 agree, 0 disagree, 2 idle  {"mask":"0111","status":"hidden_ad","fp":"9050c6fda631d05b"}
+      .. the stored fingerprint 9050c6fda631d05b; this checkout's file gives 9050c6fda631d05b
+      [19:53:19] CREATOR submit(B3, 86b8ce3f61a/posts/no-link.html)  0x6b6aadb1951e41e538a88f329c8035a1583f66ab93d778c23b3338dd66531128  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  every validator reads no-link.html for B3: 1101, two of three lines, 0.6 GEN held and 0.3 GEN back to SPONSOR at once  - 3 agree, 0 disagree, 2 idle  {"mask":"1101","held":"600000000000000000","fp":"5c9b16c3df07be7c"}
+      .. the stored fingerprint 5c9b16c3df07be7c; this checkout's file gives 5c9b16c3df07be7c
+      [19:53:58] STRANGER release(B1)  0x27601c84942b473ba837556c28b7172e47c88d3fa14ee5cd827eb4f00f704587  3 agree, 0 disagree, 2 idle  ERROR
+PASS  nobody may release B1 before its hold ends  - 3 agree, 0 disagree, 2 idle  [EXPECTED] the hold of B1 ends at 1793476699, in 298 seconds; until then anyone may recheck the post
+      [19:54:50] STRANGER recheck(B3)  0xdfd26ef5d6232d69862ad14394ac19e5df5f3c83cedbc9b94d0ab82330e4e64d  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  STRANGER rechecks B3: every validator fetches no-link.html again, still up, nothing moves  - 3 agree, 0 disagree, 2 idle  {"ok": true, "brief": "B3", "url": "https://raw.githubusercontent.com/hossein6191/sponsored/237b0e8a6645f3819fd5c12f317c686b8ce3f61a/posts/n
+
+[19:54:50] ---- phase C: the holds end on the chain's clock, and the held pay goes to the creator
+      [19:59:30] STRANGER release(B1)  0x84a1e0c3bc2dc21fca4ca88f8deacf0933506f488009b38546dd78537aa65426  3 agree, 0 disagree, 2 idle  SUCCESS
+PASS  STRANGER releases B1 once its hold has ended: 0.9 GEN to CREATOR  - 3 agree, 0 disagree, 2 idle  {"ok": true, "brief": "B1", "status": "released", "to_creator": "900000000000000000", "at": 1793476733}
+      [20:00:12] STRANGER recheck(B1)  0x53992f48d74b2447428a3c1f810fafb4cc9dab58b9709d76892db4aca94160c7  3 agree, 0 disagree, 2 idle  ERROR
+PASS  a recheck of B1 after its pay was released is refused  - 3 agree, 0 disagree, 2 idle  [EXPECTED] B1 is released; a post is rechecked while its pay is held
+      [20:03:15] STRANGER release(B3)  0x9911c52a424fd43796274e375a95efe89dd7704f5b7eb877d9524705717cd6e3  4 agree, 0 disagree, 1 idle  SUCCESS
+PASS  STRANGER releases B3: 0.6 GEN to CREATOR  - 4 agree, 0 disagree, 1 idle  {"ok": true, "brief": "B3", "status": "released", "to_creator": "600000000000000000", "at": 1793476958}
+
+[20:03:16] ---- phase D: the code read back, the views, the credit, the balances
+PASS  the code deployed at 0xa8e1A29e1C79aa7610f0583c769EA21f9317f556 is byte for byte contracts/sponsored.py  - 69896 bytes, sha256 a27e2ba9022e62d54c168b729c358dc49d9fa490f0a2d3c165050add13055b46
+PASS  brief(B1) reads released on full.html with mask 1111 and the fingerprint the round stored  - {"status":"released","mask":"1111"}
+PASS  brief(B2) reads hidden_ad, the whole fee back to SPONSOR  - {"status":"hidden_ad","mask":"0111"}
+PASS  brief(B3) reads released, 0.6 GEN to CREATOR and 0.3 GEN to SPONSOR, one recheck that found it up  - {"status":"released","mask":"1101","rechecks":1}
+PASS  briefs_of(CREATOR) finds all three as creator, with the address in any letter case  - {"total":3}
+PASS  stats(): three briefs, two released, one hidden ad, three clear readings, one recheck, one refused payment returned  - {"briefs":3,"offered":0,"accepted":0,"held_briefs":0,"released":2,"taken_down":0,"hidden_ads":1,"nothing_met":0,"declined":0,"withdrawn":0,"expired":0,"submits":3,"clear":3,"unclear":0,"resubmits":0,"rechecks":1,"held":"0","taken":"2700000000000000000","to_creators":"1500000000000000000","to_sponsors":"1200000000000000000","fees_to_sponsors":"0","credit":"50000000000000000","deposited":"50000000000000000","credit_withdrawn":"0","refused_payments":1,"returned":"900000000000000000"}
+PASS  rules() publishes the disclosure and the questions word for word, the comparison and the combine rule  - tags removed, spacing collapsed, 6,000 characters judged
+      [20:04:13] CREATOR withdraw()  0x0dcb2722f286180fb5df833eb070c24d9d3ceec6c617d99d818ccbf6801895ac  4 agree, 0 disagree, 1 idle  SUCCESS
+PASS  CREATOR takes its 0.05 GEN of credit back: every reading was clear, so no fee was spent  - 4 agree, 0 disagree, 1 idle  {"ok": true, "address": "0xb01302f74e872c09074ce0a60a9e78c5a7b6cd08", "withdrawn": "5000000000000000
+PASS  the contract's own balance is zero  - 0
+PASS  every account ends where the money says: SPONSOR down 1.5 GEN, CREATOR up 1.5 GEN, STRANGER whole  - SPONSOR -1.5  CREATOR 1.5  STRANGER 0
+
+29 passed, 0 failed
+Sponsored: 0xa8e1A29e1C79aa7610f0583c769EA21f9317f556  https://explorer-studio.genlayer.com/address/0xa8e1A29e1C79aa7610f0583c769EA21f9317f556
+transactions: 21 in 21 steps; sent a second time: none
+deploy              0x3db58250997de3ea1d311ca7a4dfb34d45d1f1175d47a6e6050e28cdd500d6d4 5 agree, 0 disagree, 0 idle SUCCESS
+openB1              0x57c3809aa3b52087644db7210c6f443ca82c0f4af6b834ba5e181e4e4ae3ccb4 3 agree, 0 disagree, 2 idle SUCCESS
+openB2              0xf0d6c4854dcd36dea31adeef85e62b207b9455b7dd6c8e8ebfc2ec75ac933ef8 3 agree, 0 disagree, 2 idle SUCCESS
+openB3              0xfc0295ae7e66dffcdd0c4bd62ddf8c7c68953d9c7adc490e03accaa80607f293 3 agree, 0 disagree, 2 idle SUCCESS
+acceptStranger      0x7a9261a927086559576e62a6db70fa975f9cd06eb63cb518c1d4503ff5aafbb1 3 agree, 0 disagree, 2 idle ERROR
+openSelf            0xf24bf0cd9fccdad2a7ffef9270c683cf001a19bce7f3d94af093d2840aff8f60 5 agree, 0 disagree, 0 idle SUCCESS
+acceptB1            0xc57b2174a5db44ac41fce3b8cf17b8721bdf167a22be697f09fa131306e92d4a 3 agree, 0 disagree, 2 idle SUCCESS
+acceptB2            0xce886aae91115f56cf1bf3d72911f93d7fbc0da5703afe73eaa4c84f8a9d7416 3 agree, 0 disagree, 2 idle SUCCESS
+acceptB3            0x4adab80ecda565510aec4c49bc38d0f4cc6ba7558fdff6af7be61ead7e1d92ee 3 agree, 0 disagree, 2 idle SUCCESS
+deposit             0x5da3c01d7a0aac19c66d2288dbecb52fb548b2b0059896f0b12441c7ebfeb0dd 3 agree, 0 disagree, 2 idle SUCCESS
+submitStranger      0x0e4e2fdf622499acf5533e6f068381f9a7388af96f2fd765e2f3ef1be4ee6338 3 agree, 0 disagree, 2 idle ERROR
+submitOutside       0x1fcb1fac18b91404567dfca1592891e723ecf857cf9416518003858343b627a9 5 agree, 0 disagree, 0 idle ERROR
+submitFull          0xcbf4826c283048349ae48f638bf7dd45e55f2e9b48030ffddf75bac272494606 3 agree, 0 disagree, 2 idle SUCCESS
+submitNoDisclosure  0xc75b37b50852535ce5726e5fe030475eb77ddb3d62ef069d61c57b9a252ed157 3 agree, 0 disagree, 2 idle SUCCESS
+submitNoLink        0x6b6aadb1951e41e538a88f329c8035a1583f66ab93d778c23b3338dd66531128 3 agree, 0 disagree, 2 idle SUCCESS
+releaseEarly        0x27601c84942b473ba837556c28b7172e47c88d3fa14ee5cd827eb4f00f704587 3 agree, 0 disagree, 2 idle ERROR
+recheckB3           0xdfd26ef5d6232d69862ad14394ac19e5df5f3c83cedbc9b94d0ab82330e4e64d 3 agree, 0 disagree, 2 idle SUCCESS
+releaseB1           0x84a1e0c3bc2dc21fca4ca88f8deacf0933506f488009b38546dd78537aa65426 3 agree, 0 disagree, 2 idle SUCCESS
+recheckLate         0x53992f48d74b2447428a3c1f810fafb4cc9dab58b9709d76892db4aca94160c7 3 agree, 0 disagree, 2 idle ERROR
+releaseB3           0x9911c52a424fd43796274e375a95efe89dd7704f5b7eb877d9524705717cd6e3 4 agree, 0 disagree, 1 idle SUCCESS
+withdrawCredit      0x0dcb2722f286180fb5df833eb070c24d9d3ceec6c617d99d818ccbf6801895ac 4 agree, 0 disagree, 1 idle SUCCESS
+
+exit 0

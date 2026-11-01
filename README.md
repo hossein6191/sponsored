@@ -232,6 +232,7 @@ tests/on_chain/smoke.mjs        a throwaway-account run against Studio
 tools/mutate.py                 the generator that writes MUTATIONS.md and refuses to if anything survives
 docs/CONTRACTS.md               purpose, consensus, state, methods, loops, errors and limits
 docs/DECISIONS.md               why each rule is the way it is, and what is verified and what is not
+web/                            the site (see The site below)
 ```
 
 ## Running it
@@ -277,6 +278,68 @@ back, and checks that the contract holds nothing and every account ended where
 the money table says. It prints a PASS or FAIL line for every check,
 `N passed, M failed`, and the contract address.
 
+## The site
+
+`web/` is the site for the contract (Next.js 16; on Vercel its Root Directory
+is `web`). It looks like a creator studio: the brief is a checklist card whose
+lines light up mint or stay tomato from the agreed mask, with line 0 as a
+`#ad disclosure` badge; the creator's post sits in a phone frame with its
+fingerprint; held pay is a bar that fills up to its release time.
+
+| page | what it is for |
+|---|---|
+| `/` | the promise in one minute, how the money moves on each demo post, where to start |
+| `/brief/new` | open a brief: to the demo creator or any address, the lines, the fee, the windows, with a chip under every field |
+| `/brief/B1` | one brief: the waiting panel, the checklist, the post, "What the creator posts", the hold bar, recheck, release and expire |
+| `/mine` | the briefs you sponsor and the ones you create |
+| `/creator` | for creators: accept or decline, submit the post's address, keep credit for submit fees |
+| `/ledger` | every brief and the contract's totals |
+| `/how` | the four questions word for word, why GenLayer, the money table, the limits, and `rules()` read live |
+
+Every wait on the site says what is happening, how long it takes, whether you
+must act, whether you can leave, and where the money is (`web/lib/guide.ts`,
+for every state of a brief and every role).
+
+**The demo creator.** So one visitor's wallet can try everything as the
+sponsor, the site's server holds a throwaway Studio key, `DEMO_CREATOR_KEY`,
+that writes the fictional blog Harbour Eats. Its site is this repository's
+`posts/` folder on `raw.githubusercontent.com`, pinned to `POSTS_COMMIT` in
+`web/lib/config.ts`. The visitor opens a brief to it with the demo lines and
+short windows (publish within 30 minutes, keep it up 10); `POST
+/api/demo/accept {brief}` accepts it, and `POST /api/demo/post {brief, page}`
+submits one of the four fixed posts (`full`, `no-disclosure`, `no-link`,
+`wrong-product`), depositing credit first when it has run out. The visitor
+names the brief and which post; nothing the visitor types is ever signed.
+`GET /api/demo/status` says whether the demo creator can act and exactly why
+not.
+
+To bring it online after the repository is pushed and the contract deployed:
+
+```
+cd web
+REGISTER=<contract> DEMO_CREATOR_KEY=<throwaway key> COMMIT=<sha> node tools/open-demo-creator.mjs   # DRY=1 sends nothing
+```
+
+then set `POSTS_COMMIT` (and `DEMO_CONTRACT`, or `NEXT_PUBLIC_CONTRACT`) in
+`web/lib/config.ts`, and `DEMO_CREATOR_KEY` on the host. `web/.env.example`
+lists every setting.
+
+```
+cd web
+npm ci
+NEXT_PUBLIC_MOCK=1 npm run dev              # the whole site on an in-memory copy of the contract, no wallet
+npm run typecheck && npm run lint && npm run test:site && npm run build
+```
+
+`NEXT_PUBLIC_MOCK=1` runs the site on `web/lib/chain-mock.ts`, which follows
+the contract on everything deterministic, its refusal sentences word for word,
+and reads the four demo posts as the demo expects. `npm run test:site` checks
+every call against `contracts/sponsored.py`, asks the contract itself (through
+python) how it reads the same arguments and compares `rules()` whole, runs the
+mock through every outcome with the money conserved, checks the waiting copy
+for every state and role and every suggestion chip against the limits, and
+checks that no file carries anything personal.
+
 ## Network
 
 GenLayer Studio, chain 61999, RPC `https://studio.genlayer.com/api`, explorer
@@ -286,7 +349,36 @@ line.
 
 ## Evidence
 
-The on-chain run is recorded here once it has run.
+Run on 1 November 2026 on GenLayer Studio (chain 61999) by `tests/on_chain/smoke.mjs`, from generated accounts funded from the
+Studio faucet, none of them anybody's wallet: **SPONSOR** opens briefs, **CREATOR** accepts and submits posts, **STRANGER** tries what it may not; the posts were the files in `posts/` pinned to commit 237b0e8a6645f3819fd5c12f317c686b8ce3f61a. **29 passed, 0 failed**; transactions: 21 in 21 steps; sent a second time: none.
+The whole log is `tests/on_chain/smoke-run.log`. Every validator read full.html as 1111 and the whole 0.9 GEN was held and then released to the creator; no-disclosure.html read 0111, a hidden ad, and the whole fee went back to the sponsor; no-link.html read 1101, two of three lines, so 0.6 GEN was held for the creator and 0.3 GEN went back at once; a recheck found that post still up before it was released.
+
+- `sponsored.py` deployed at [`0xa8e1A29e1C79aa7610f0583c769EA21f9317f556`](https://explorer-studio.genlayer.com/address/0xa8e1A29e1C79aa7610f0583c769EA21f9317f556)
+
+- the code deployed at 0xa8e1A29e1C79aa7610f0583c769EA21f9317f556 is byte for byte contracts/sponsored.py: 69896 bytes, sha256 a27e2ba9022e62d54c168b729c358dc49d9fa490f0a2d3c165050add13055b46
+
+| step | by | transactions | votes |
+|---|---|---|---|
+| SPONSOR opens B1 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held | SPONSOR | [0x3db58250…](https://explorer-studio.genlayer.com/tx/0x3db58250997de3ea1d311ca7a4dfb34d45d1f1175d47a6e6050e28cdd500d6d4), [0x57c3809a…](https://explorer-studio.genlayer.com/tx/0x57c3809aa3b52087644db7210c6f443ca82c0f4af6b834ba5e181e4e4ae3ccb4) | 3 agree, 0 disagree, 2 idle |
+| SPONSOR opens B2 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held | SPONSOR | [0xf0d6c485…](https://explorer-studio.genlayer.com/tx/0xf0d6c4854dcd36dea31adeef85e62b207b9455b7dd6c8e8ebfc2ec75ac933ef8) | 3 agree, 0 disagree, 2 idle |
+| SPONSOR opens B3 for CREATOR: three lines, the disclosure added as line 0, 0.9 GEN held | SPONSOR | [0xfc0295ae…](https://explorer-studio.genlayer.com/tx/0xfc0295ae7e66dffcdd0c4bd62ddf8c7c68953d9c7adc490e03accaa80607f293) | 3 agree, 0 disagree, 2 idle |
+| STRANGER may not accept B1 | STRANGER | [0x7a9261a9…](https://explorer-studio.genlayer.com/tx/0x7a9261a927086559576e62a6db70fa975f9cd06eb63cb518c1d4503ff5aafbb1) | 3 agree, 0 disagree, 2 idle |
+| SPONSOR may not name itself as the creator, and the 0.9 GEN comes back in the same transaction | SPONSOR | [0xf24bf0cd…](https://explorer-studio.genlayer.com/tx/0xf24bf0cd9fccdad2a7ffef9270c683cf001a19bce7f3d94af093d2840aff8f60) | 5 agree, 0 disagree, 0 idle |
+| CREATOR accepts B1 before publish_by | CREATOR | [0xc57b2174…](https://explorer-studio.genlayer.com/tx/0xc57b2174a5db44ac41fce3b8cf17b8721bdf167a22be697f09fa131306e92d4a) | 3 agree, 0 disagree, 2 idle |
+| CREATOR accepts B2 before publish_by | CREATOR | [0xce886aae…](https://explorer-studio.genlayer.com/tx/0xce886aae91115f56cf1bf3d72911f93d7fbc0da5703afe73eaa4c84f8a9d7416) | 3 agree, 0 disagree, 2 idle |
+| CREATOR accepts B3 before publish_by | CREATOR | [0x4adab80e…](https://explorer-studio.genlayer.com/tx/0x4adab80ecda565510aec4c49bc38d0f4cc6ba7558fdff6af7be61ead7e1d92ee) | 3 agree, 0 disagree, 2 idle |
+| CREATOR deposits 0.05 GEN of credit for submit fees | CREATOR | [0x5da3c01d…](https://explorer-studio.genlayer.com/tx/0x5da3c01d7a0aac19c66d2288dbecb52fb548b2b0059896f0b12441c7ebfeb0dd) | 3 agree, 0 disagree, 2 idle |
+| STRANGER may not submit a post for B1 | STRANGER | [0x0e4e2fdf…](https://explorer-studio.genlayer.com/tx/0x0e4e2fdf622499acf5533e6f068381f9a7388af96f2fd765e2f3ef1be4ee6338) | 3 agree, 0 disagree, 2 idle |
+| CREATOR points at the repository's README, outside the post prefix: refused before any fetch, no fee | CREATOR | [0x1fcb1fac…](https://explorer-studio.genlayer.com/tx/0x1fcb1fac18b91404567dfca1592891e723ecf857cf9416518003858343b627a9) | 5 agree, 0 disagree, 0 idle |
+| every validator reads full.html for B1: 1111, the whole 0.9 GEN held for CREATOR until the hold ends | CREATOR | [0xcbf4826c…](https://explorer-studio.genlayer.com/tx/0xcbf4826c283048349ae48f638bf7dd45e55f2e9b48030ffddf75bac272494606) | 3 agree, 0 disagree, 2 idle |
+| every validator reads no-disclosure.html for B2: 0111, a hidden ad, the whole 0.9 GEN back to SPONSOR | CREATOR | [0xc75b37b5…](https://explorer-studio.genlayer.com/tx/0xc75b37b50852535ce5726e5fe030475eb77ddb3d62ef069d61c57b9a252ed157) | 3 agree, 0 disagree, 2 idle |
+| every validator reads no-link.html for B3: 1101, two of three lines, 0.6 GEN held and 0.3 GEN back to SPONSOR at once | CREATOR | [0x6b6aadb1…](https://explorer-studio.genlayer.com/tx/0x6b6aadb1951e41e538a88f329c8035a1583f66ab93d778c23b3338dd66531128) | 3 agree, 0 disagree, 2 idle |
+| nobody may release B1 before its hold ends | STRANGER | [0x27601c84…](https://explorer-studio.genlayer.com/tx/0x27601c84942b473ba837556c28b7172e47c88d3fa14ee5cd827eb4f00f704587) | 3 agree, 0 disagree, 2 idle |
+| STRANGER rechecks B3: every validator fetches no-link.html again, still up, nothing moves | STRANGER | [0xdfd26ef5…](https://explorer-studio.genlayer.com/tx/0xdfd26ef5d6232d69862ad14394ac19e5df5f3c83cedbc9b94d0ab82330e4e64d) | 3 agree, 0 disagree, 2 idle |
+| STRANGER releases B1 once its hold has ended: 0.9 GEN to CREATOR | STRANGER | [0x84a1e0c3…](https://explorer-studio.genlayer.com/tx/0x84a1e0c3bc2dc21fca4ca88f8deacf0933506f488009b38546dd78537aa65426) | 3 agree, 0 disagree, 2 idle |
+| a recheck of B1 after its pay was released is refused | STRANGER | [0x53992f48…](https://explorer-studio.genlayer.com/tx/0x53992f48d74b2447428a3c1f810fafb4cc9dab58b9709d76892db4aca94160c7) | 3 agree, 0 disagree, 2 idle |
+| STRANGER releases B3: 0.6 GEN to CREATOR | STRANGER | [0x9911c52a…](https://explorer-studio.genlayer.com/tx/0x9911c52a424fd43796274e375a95efe89dd7704f5b7eb877d9524705717cd6e3) | 4 agree, 0 disagree, 1 idle |
+| CREATOR takes its 0.05 GEN of credit back: every reading was clear, so no fee was spent | CREATOR | [0x0dcb2722…](https://explorer-studio.genlayer.com/tx/0x0dcb2722f286180fb5df833eb070c24d9d3ceec6c617d99d818ccbf6801895ac) | 4 agree, 0 disagree, 1 idle |
 
 ## Licence
 
