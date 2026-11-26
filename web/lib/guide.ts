@@ -11,6 +11,7 @@
 // tests/unit/guide.test.mjs runs every state for every role. Nothing here may promise what
 // contracts/sponsored.py does not do.
 
+import { FEE_NOTE } from "./fees.ts";
 import { clockTime, gen, span } from "./format.ts";
 import { MAX_SUBMITS, SUBMIT_FEE, type BriefStatus } from "./rules.ts";
 import type { Submission, WriteFn } from "./types.ts";
@@ -153,7 +154,7 @@ export function signGuide(s: SignInput): Guide {
     mustAct: true,
     leave: "Stay on this page until you have answered the wallet; this page then follows the transaction for you.",
     canLeave: false,
-    money,
+    money: `${money} ${FEE_NOTE}`,
   });
 }
 

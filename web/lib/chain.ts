@@ -17,6 +17,7 @@ import { createClient } from "genlayer-js";
 import { studionet } from "genlayer-js/chains";
 import { getAddress, type Address } from "viem";
 import { notify } from "./browser-store";
+import { quoteFees } from "./fees";
 import { contractAddress, demoCreatorFallback } from "./config";
 import { RATE_LIMITED, createReadCache, isMissingMethodError, noteFailure, rpc, sleep, waitForCooldown, withRetry, decodeTx, type RawTx } from "./rpc";
 import { PAGE, STATUSES, idNumber, sentence, type BriefStatus } from "./rules";
@@ -299,11 +300,14 @@ export async function write(call: Call): Promise<string> {
   const chainId = await getChainId(signer.provider);
   if (chainId !== CHAIN_ID) throw new Error(WRONG_CHAIN(chainId));
   const client = createClient({ chain: studio, account: signer.address as Address, provider: signer.provider });
+  // Studio v0.123: the fee quote goes with the call (lib/fees.ts); the wallet shows it on top of any value.
+  const fees = await quoteFees(client);
   const hash = await client.writeContract({
     address: address as Address,
     functionName: call.fn,
     args: call.args,
     value: call.value ?? 0n,
+    fees,
   });
   if (typeof hash !== "string" || !hash.startsWith("0x")) throw new Error("The wallet returned no transaction hash.");
   return hash;

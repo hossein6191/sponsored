@@ -19,6 +19,8 @@
 // `npm run test:site` runs them from node, with no network and no browser
 // (tests/unit/rpc.test.mjs).
 
+import { EXECUTION_DONE } from "./fees.ts";
+
 export const RPC_URL = "https://studio.genlayer.com/api";
 
 /** Pauses between the eight tries: 1+2+3+5+7+9+12 = 39 s in all. */
@@ -442,6 +444,9 @@ export type RawTx = {
   [k: string]: unknown;
 };
 
+/** The execution result Studio v0.123 records on a transaction, by name; "" while there is none yet. */
+export const executionName = (tx: RawTx): string => (typeof tx.txExecutionResultName === "string" ? tx.txExecutionResultName.toUpperCase() : "");
+
 export type LeaderReceipt = {
   result?: string;
   execution_result?: string;
@@ -501,6 +506,8 @@ export type DecodedTx = {
   applied: boolean | null;
   undetermined: boolean;
   exec: string | null;
+  /** FINISHED_WITH_RETURN or FINISHED_WITH_ERROR once the transaction carries its execution result, else "". */
+  execution: string;
   result: Record<string, unknown> | null;
   message: string;
 };
@@ -514,6 +521,7 @@ export function decodeTx(tx: RawTx | null | undefined): DecodedTx {
       applied: null,
       undetermined: false,
       exec: null,
+      execution: "",
       result: null,
       message: "",
     };
@@ -523,7 +531,10 @@ export function decodeTx(tx: RawTx | null | undefined): DecodedTx {
   const receipt = leaderReceiptOf(tx);
   const text = receipt?.result ? base64ToText(receipt.result) : "";
   const result = jsonFromText(text);
-  const exec = receipt?.execution_result ? String(receipt.execution_result).toUpperCase() : null;
+  // The transaction's own execution result first (Studio v0.123), then the leader's receipt.
+  const execution = executionName(tx);
+  const exec =
+    execution === "FINISHED_WITH_ERROR" ? "ERROR" : execution === "FINISHED_WITH_RETURN" ? "SUCCESS" : receipt?.execution_result ? String(receipt.execution_result).toUpperCase() : null;
   const undetermined = isUndetermined(tx, votes);
   const applied =
     status === "CANCELED" || undetermined
@@ -537,7 +548,17 @@ export function decodeTx(tx: RawTx | null | undefined): DecodedTx {
     applied,
     undetermined,
     exec,
+    execution,
     result,
     message: printable(text),
   };
+}
+
+/**
+ * Whether a transaction is over: a FINALIZED one only once it carries its execution result (Studio v0.123
+ * records both), a cancelled or undetermined one at once.
+ */
+export function isDone(s: DecodedTx): boolean {
+  if (s.undetermined || s.status === "CANCELED" || s.status === "UNDETERMINED") return true;
+  return s.status === "FINALIZED" && (EXECUTION_DONE.has(s.execution) || s.exec !== null);
 }

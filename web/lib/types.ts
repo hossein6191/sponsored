@@ -110,6 +110,8 @@ export type TxStatus = {
   applied: boolean | null;
   undetermined: boolean;
   exec: string | null;
+  /** Studio v0.123's execution result (FINISHED_WITH_RETURN or FINISHED_WITH_ERROR), "" until it is recorded; absent in mock mode. */
+  execution?: string;
   result: Record<string, unknown> | null;
   message: string;
 };

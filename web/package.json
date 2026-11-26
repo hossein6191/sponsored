@@ -14,7 +14,7 @@
     "open-demo-creator": "node tools/open-demo-creator.mjs"
   },
   "dependencies": {
-    "genlayer-js": "1.1.8",
+    "genlayer-js": "2.0.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",

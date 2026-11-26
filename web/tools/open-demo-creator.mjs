@@ -11,8 +11,9 @@
 // read from the environment only and never printed. When COMMIT is given, every post the demo creator
 // will submit is fetched from raw.githubusercontent.com and compared with posts/ in this checkout, so a
 // wrong commit is caught before anyone relies on it (POSTS_COMMIT in lib/config.ts takes the same
-// commit). Each transaction is followed to a final status. Needs Node 22.18 or later (it reads lib/*.ts
-// directly).
+// commit). Studio v0.123 charges fees: each write carries the fees quoted by estimateTransactionFees()
+// (lib/fees.ts) and is followed until it is FINALIZED with its execution result. Needs Node 22.18 or later
+// (it reads lib/*.ts directly).
 
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -22,6 +23,7 @@ import { getAddress } from "viem";
 
 import { REPO_URL } from "../lib/config.ts";
 import { cleanKey, keyProblem } from "../lib/demo-key.ts";
+import { EXECUTION_DONE, quoteFees } from "../lib/fees.ts";
 import { DEMO_POSTS, postsBase, prefixFits, repoOf } from "../lib/demo-creator.ts";
 import { SUBMIT_FEE } from "../lib/rules.ts";
 
@@ -100,7 +102,8 @@ async function follow(hash) {
     await sleep(4000);
     const tx = await rpc("eth_getTransactionByHash", [hash]);
     const status = String(tx?.status ?? "");
-    if (status === "FINALIZED" || status === "CANCELED" || status === "UNDETERMINED") {
+    const exec = String(tx?.txExecutionResultName ?? "");
+    if ((status === "FINALIZED" && EXECUTION_DONE.has(exec)) || status === "CANCELED" || status === "UNDETERMINED") {
       const lr = tx.consensus_data?.leader_receipt;
       const one = Array.isArray(lr) ? lr[0] : lr;
       let text = "";
@@ -117,7 +120,7 @@ async function follow(hash) {
         json = null;
       }
       const votes = Object.values(tx.consensus_data?.votes ?? {});
-      return { status, json, agree: votes.filter((v) => v === "agree").length, of: votes.length };
+      return { status, exec, json, agree: votes.filter((v) => v === "agree").length, of: votes.length };
     }
   }
   return { status: "TIMEOUT", json: null, agree: 0, of: 0 };
@@ -161,9 +164,9 @@ if (DRY) {
   console.log(`DRY RUN: deposit() with ${top} atto to ${REGISTER}`);
   process.exit(0);
 }
-const hash = await client.writeContract({ address: REGISTER, functionName: "deposit", args: [], value: top });
+const hash = await client.writeContract({ address: REGISTER, functionName: "deposit", args: [], value: top, fees: await quoteFees(client) });
 const sent = await follow(hash);
-const ok = sent.json?.ok === true;
-console.log(`${ok ? "OK  " : "FAIL"}  deposit: ${ok ? sent.json.credit + " atto of credit" : sent.status}  ${sent.agree}/${sent.of} agree  ${EXPLORER}/tx/${hash}`);
+const ok = sent.exec === "FINISHED_WITH_RETURN" && sent.json?.ok === true;
+console.log(`${ok ? "OK  " : "FAIL"}  deposit: ${ok ? sent.json.credit + " atto of credit" : `${sent.status} ${sent.exec}`}  ${sent.agree}/${sent.of} agree  ${EXPLORER}/tx/${hash}`);
 if (!ok) process.exit(1);
 console.log("\nThe demo creator is ready. Set DEMO_CREATOR_KEY on the host and check GET /api/demo/status.");

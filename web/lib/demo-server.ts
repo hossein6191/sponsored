@@ -12,11 +12,12 @@ import { getAddress, type Address } from "viem";
 
 import { balanceOf, contractAddress, isMock, readBrief, readCredit, studio } from "./chain";
 import { REPO_URL, postsCommit } from "./config";
+import { quoteFees } from "./fees";
 import { cleanKey, keyProblem } from "./demo-key";
 import { DEMO_LIMITS, createLimiter } from "./demo-limit";
 import { demoProblem, isPostKey, postUrl, postsBase, prefixFits, repoOf } from "./demo-creator";
 import { SUBMIT_FEE } from "./rules";
-import { FINAL_STATUSES, rpc, sleep, statusName, type RawTx } from "./rpc";
+import { FINAL_STATUSES, executionName, rpc, sleep, statusName, type RawTx } from "./rpc";
 import type { DemoStatus } from "./types";
 
 type Account = ReturnType<typeof createAccount>;
@@ -123,6 +124,7 @@ async function landed(hash: string, ms: number): Promise<boolean> {
     try {
       const tx = await rpc<RawTx | null>("eth_getTransactionByHash", [hash]);
       const s = statusName(tx?.status);
+      if (tx && executionName(tx) === "FINISHED_WITH_ERROR") return false;
       if (s === "ACCEPTED" || s === "FINALIZED") return true;
       if (s === "CANCELED" || s === "UNDETERMINED") return false;
     } catch {
@@ -169,7 +171,9 @@ export async function sendDemo(brief: string, what: string): Promise<ServerAnswe
   const client = createClient({ chain: studio, account: a });
   const sign = (functionName: string, args: string[], value = 0n) =>
     serial(async () => {
-      const hash = await client.writeContract({ address: contractAddress() as Address, functionName, args, value });
+      // Studio v0.123: every write carries the fees quoted for it (lib/fees.ts), paid from the creator's balance.
+      const fees = await quoteFees(client);
+      const hash = await client.writeContract({ address: contractAddress() as Address, functionName, args, value, fees });
       if (typeof hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(hash)) throw new Error("no hash");
       return hash;
     });
